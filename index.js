@@ -43,7 +43,7 @@ for(file of command_files) {
     }
 }
 
-const client_id = '942788321120235570'
+const client_id = '973989043698286722'
 rest.put(Routes.applicationCommands(client_id), { body: commands })
     .then(() => console.log(`Successfully registered application commands.`))
     .catch(console.error)
