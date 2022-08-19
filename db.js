@@ -9,4 +9,4 @@ const db = new Schema({
     }]
 })
 
-module.exports = model('testing-role', db)
+module.exports = model('role', db)
