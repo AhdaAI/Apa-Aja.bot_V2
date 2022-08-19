@@ -7,7 +7,7 @@ module.exports = {
 
     async execute() {
         console.log(`Connecting to mongodb...`)
-        connect(process.env.mongodb, {
+        connect(process.env.LOGIN, {
             keepAlive: true
         })
             .then(() => console.log('Connection established...'))
