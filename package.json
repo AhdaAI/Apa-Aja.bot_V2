@@ -1,0 +1,16 @@
+{
+  "name": "apa-aja.bot_v2",
+  "version": "1.0.0",
+  "description": "Next version of apa-aja.bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm outdated && nodemon index.js"
+  },
+  "author": "Ahda",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.2.0",
+    "dotenv": "^16.0.1",
+    "mongoose": "^6.5.2"
+  }
+}
