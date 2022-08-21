@@ -3,10 +3,13 @@ module.exports = {
     once: false,
 
     async execute(e) {
+        // console.error(e)
         console.log(
-            `ERROR!
+            `
+            Name: ${e.name}
+            Message: ${e.message}
             Code: ${e.code}
-            Message: ${e.message}`
+            ${e.stack}`
         )
     }
 }
