@@ -30,8 +30,8 @@ module.exports = {
         field.push({
             name: '__*Commands*__',
             value: `
-                > *FreadBoat* = ;;
-                > *Chip Bot* = !
+                > *FreadBoat* = /
+                > *Chip Bot* = /
                 > *Melijn* = -
             `,
             inline: false
