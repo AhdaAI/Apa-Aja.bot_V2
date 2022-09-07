@@ -5,6 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('add')
         .setDescription('[ADMIN] Adding role to database')
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
         .addRoleOption(option => option
             .setName('role')
             .setDescription('The role to add')
@@ -22,15 +23,15 @@ module.exports = {
      * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
-        if(!await interaction.memberPermissions.has('Administrator')) {
-            console.log(`${interaction.user.username} tried to use add`)
-            await interaction.reply({
-                content: `> Only admin can use this command`,
-                ephemeral: true
-            })
+        // if(!await interaction.memberPermissions.has('Administrator')) {
+        //     console.log(`${interaction.user.username} tried to use add`)
+        //     await interaction.reply({
+        //         content: `> Only admin can use this command`,
+        //         ephemeral: true
+        //     })
 
-            return
-        }
+        //     return
+        // }
 
         const server_id = await interaction.guild.id
         const data = await interaction.options.data

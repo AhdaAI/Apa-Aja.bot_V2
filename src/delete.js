@@ -5,6 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('delete')
         .setDescription('[ADMIN] Delete one role from database')
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
         .addRoleOption(
             option => option.setName('role')
                 .setDescription('The role to delete')
@@ -17,15 +18,15 @@ module.exports = {
      * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
-        if(!await interaction.memberPermissions.has('Administrator')) {
-            console.log(`${interaction.user.username} tried to use delete`)
-            await interaction.reply({
-                content: `> Only admin can use this command`,
-                ephemeral: true
-            })
+        // if(!await interaction.memberPermissions.has('Administrator')) {
+        //     console.log(`${interaction.user.username} tried to use delete`)
+        //     await interaction.reply({
+        //         content: `> Only admin can use this command`,
+        //         ephemeral: true
+        //     })
 
-            return
-        }
+        //     return
+        // }
 
         const server =  await interaction.guild
         let server_db = await model.findOne({server: server.id}).exec()
