@@ -16,7 +16,7 @@ module.exports = {
             const command = client.commands.get(interaction.commandName)
             if(!command) {
                 await interaction.reply({
-                    content: ```Error: Command not found```,
+                    content: `Error: Command not found`,
                     ephemeral: true
                 })
                 return
