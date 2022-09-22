@@ -50,7 +50,7 @@ module.exports = {
 
         fancy.addFields(field)
 
-        // await member.roles.add(djRole).catch(console.error)
+        await member.roles.add(djRole).catch(console.error)
 
         await welcome_channel.send({
             embeds: [fancy]
