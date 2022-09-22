@@ -14,7 +14,13 @@ module.exports = {
         //command respond
         if(interaction.isChatInputCommand()) {
             const command = client.commands.get(interaction.commandName)
-            if(!command) return;
+            if(!command) {
+                await interaction.reply({
+                    content: `>>> Error: Command not found`,
+                    ephemeral: true
+                })
+                return
+            };
 
             try {
                 await command.execute(interaction)
