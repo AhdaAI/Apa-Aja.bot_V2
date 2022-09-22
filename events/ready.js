@@ -8,10 +8,10 @@ module.exports = {
     once: false,
 
     async execute() {
-        // client.user.setActivity({
-        //     type: ActivityType.Listening,
-        //     name: '/'
-        // })
+        client.user.setActivity({
+            type: ActivityType.Listening,
+            name: '/'
+        })
 
         console.log(`Connecting to mongodb...`)
         connect(process.env.LOGIN, {
