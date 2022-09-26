@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, CommandInteraction } = require('discord.js')
 const model = require('../db')
-const builder = require('../utils/builder')
+const { dropDown } = require('../utils/builder')
 const { users, channel } = require('../utils/conf.json')
 
 module.exports = {
@@ -65,14 +65,7 @@ module.exports = {
             server_db.roles.forEach(r => option.push({label: r.name, description: r.description, value: r.id}))
         }
 
-        const select_menu = new builder('panel').dropDown('Select a role', option)
-
-        // const row = new ActionRowBuilder()
-        //     .addComponents(
-        //         new SelectMenuBuilder()
-        //             .setCustomId('panel')
-        //             .setPlaceholder('')
-        //     )
+        const select_menu = new dropDown('panel').build('Select a role', option)
 
         await interaction.reply({
             embeds: [fancy],
