@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, CommandInteraction, ButtonStyle } = require('discord.js')
 const model = require('../db')
-// const builder = require('../utils/builder')
 const { dropDown } = require('../utils/builder')
 
 module.exports = {
