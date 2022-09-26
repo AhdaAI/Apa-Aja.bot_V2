@@ -1,11 +1,11 @@
-const { ActionRowBuilder, SelectMenuBuilder, ModalBuilder, ButtonBuilder, ButtonStyle, TextInputBuilder, TextInputStyle } = require('discord.js')
+const { ActionRowBuilder, SelectMenuBuilder, ModalBuilder, ButtonBuilder, ButtonStyle, TextInputBuilder, TextInputStyle, SelectMenuOptionBuilder, SelectMenuComponent } = require('discord.js')
 
-module.exports = class builder {
-    constructor(customId = String) {
+class dropDown {
+    constructor(customId = SelectMenuBuilder.prototype.setCustomId) {
         this.customId = customId
     }
 
-    dropDown(placeHolder = String, option) {
+    build(placeHolder = SelectMenuComponent.prototype.placeholder, option = SelectMenuComponent.prototype.options) {
         return new ActionRowBuilder()
             .addComponents(
                 new SelectMenuBuilder()
@@ -14,29 +14,35 @@ module.exports = class builder {
                     .addOptions(option)
             )
     }
+}
 
-    button(placeHolder = String, label = String, style = ButtonStyle) {
-        //work on proggress
-        return new ButtonBuilder()
-            .setCustomId(this.customId)
-            .setLabel(label)
-            .setStyle(style)
+class modal {
+    constructor(customId = ModalBuilder.prototype.setCustomId) {
+        this.customId = customId
     }
 
-    modal(title = String, map = Array) {
+    build(title = ModalBuilder.prototype.setTitle, map = ModalBuilder.prototype.components) {
         const modal = new ModalBuilder()
-            .setCustomId(this.customId)
             .setTitle(title)
-
-        let num = 1
+            .setCustomId(this.customId)
+        
         map.forEach(m => {
-            modal.addComponents(new ActionRowBuilder().addComponents(
-                new TextInputBuilder()
-                    .setCustomId(m.id.toLowerCase())
-                    .setLabel(m.label)
-                    .setStyle(m.style)
-            ))
+            modal.addComponents(
+                new ActionRowBuilder().addComponents(
+                    new TextInputBuilder()
+                        .setCustomId(m.id.toLowerCase())
+                        .setLabel(m.label)
+                        .setStyle(m.style)
+                )
+            )
         })
+
         return modal
     }
+}
+
+
+module.exports = {
+    dropDown,
+    modal
 }
