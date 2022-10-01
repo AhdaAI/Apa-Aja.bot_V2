@@ -33,6 +33,12 @@ module.exports = {
     const dict = await request(`https://api.urbandictionary.com/v0/define?${query}`)
     const { list } = await getJSONResponse(dict.body)
 
+    if(!list.leght) {
+      return interaction.editReply({
+        content: `Error: ${term} unknown`
+      })
+    }
+
     const [answer] = list
 
     const fancy = new EmbedBuilder()
