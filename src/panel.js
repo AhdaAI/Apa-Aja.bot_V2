@@ -19,7 +19,7 @@ module.exports = {
             .setTitle(server.name)
             .setURL('https://bit.ly/IqT6zt')
             .setThumbnail(server.iconURL())
-            .setDescription(`The server for everything...`)
+            .setDescription(`Terserah, apa aja yang penting hepi...`)
             .setFooter({
                 text: '!!! CHECK BOT ONLINE STATUS !!!'
             })
@@ -27,15 +27,6 @@ module.exports = {
         await interaction.guild.channels.cache
         //add more field here
         let field = []
-        field.push({
-            name: '__*Commands*__',
-            value: `
-                > *FreadBoat* = /
-                > *Chip Bot* = /
-                > *Melijn* = -
-            `,
-            inline: false
-        })
         field.push({
             name: '__*Information*__',
             value: `
@@ -48,7 +39,7 @@ module.exports = {
             name: `__*Credits*__`,
             value: `
                 >>> Server owner: ${await interaction.guild.fetchOwner()}
-                Bot Profile picture: ${await interaction.guild.members.fetch(users.credits)}
+                Server Profile picture: ${await interaction.guild.members.fetch(users.credits)}
             `,
             inline: true
         })
