@@ -37,7 +37,7 @@ module.exports = {
         }
 
         //select menus respond
-        if(interaction.isSelectMenu()){
+        if(interaction.isStringSelectMenu()){
             const { customId, member, values } = interaction
 
             //individual select menu
