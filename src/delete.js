@@ -18,16 +18,6 @@ module.exports = {
      * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
-        // if(!await interaction.memberPermissions.has('Administrator')) {
-        //     console.log(`${interaction.user.username} tried to use delete`)
-        //     await interaction.reply({
-        //         content: `> Only admin can use this command`,
-        //         ephemeral: true
-        //     })
-
-        //     return
-        // }
-
         const server =  await interaction.guild
         let server_db = await model.findOne({server: server.id}).exec()
         if(!server_db) {

@@ -39,7 +39,7 @@ module.exports = {
             name: `__*Credits*__`,
             value: `
                 >>> Server owner: ${await interaction.guild.fetchOwner()}
-                Server Profile picture: ${await interaction.guild.members.fetch(users.credits)}
+                Server Profile picture: ${await (await interaction.guild.members.fetch(users.credits))}
             `,
             inline: true
         })
