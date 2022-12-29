@@ -1,5 +1,5 @@
 const { Interaction, codeBlock } = require('discord.js')
-const data = require('../utils/channel.json')
+const channels = require('../utils/channel.json')
 const client = require('../index')
 
 module.exports = {
@@ -25,14 +25,21 @@ module.exports = {
       try {
         await command.execute(interact)
       } catch(e) {
-        await interact.reply({
-          content:'Error: Command failed to interact',
-          ephemeral: true
-        })
-        const log = await interact.guild.channels.fetch(data.logs)
+        const log = await interact.guild.channels.fetch(channels.logs)
+        try {
+          await interact.reply({
+            content:'Error: Command failed to interact',
+            ephemeral: true
+          })
+        } catch(e) {
+          await log.send({
+            content: codeBlock(`Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`)
+          })
+        }
         await log.send({
           content: codeBlock(`Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`)
         })
+        console.log(e)
       }
     }
   }

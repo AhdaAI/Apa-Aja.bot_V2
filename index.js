@@ -15,6 +15,7 @@ const command_files = fs.readdirSync(source).filter(file => file.endsWith('.js')
 //events
 for(file of events_files) {
     try {
+        console.log(`Creating event for ${file}`)
         const file_path = path.join(events, file)
         const event = require(file_path)
 
@@ -32,6 +33,7 @@ for(file of events_files) {
 client.commands = new Collection()
 const commands = []
 for(file of command_files) {
+    console.log(`Creating command for ${file}`)
     const file_path = path.join(source, file)
     const command = require(file_path)
 
