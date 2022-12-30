@@ -16,6 +16,7 @@ module.exports = {
         .setDescription('default: [+] Text & Voice Channel')
         .setRequired(false)
     ),
+    test: false,
   
   /**
    * 

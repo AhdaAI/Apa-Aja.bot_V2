@@ -7,6 +7,7 @@ module.exports = {
     .setDescription('Creating new database entry')
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
     .setDMPermission(false),
+  test: false,
 
     /**
      * 
