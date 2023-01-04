@@ -8,9 +8,6 @@ module.exports = {
   once: false,
 
   async execute() {
-    client.user.setActivity('/', {
-      type: ActivityType.Listening
-    })
     console.log('=== Started and ready to use ===')
     console.log('[+] Apa-Aja.bot v2.0.1')
     

@@ -26,13 +26,13 @@ for(const file of eventFiles) {
   events.push(eve)
 }
 
-const commandsTable = {
+const commandsTable = [{
   Globals: commands.globalCommand.map(com => com.name),
-  Locals: commands.localCommand.map(com => com.name)
-}
+  Locals: commands.localCommand.map(com => com.name),
+  Events: events.map(eve => eve.name)
+}]
 
 console.table(commandsTable)
-console.table(events, ['name'])
 
 module.exports = {
   command: commands,
