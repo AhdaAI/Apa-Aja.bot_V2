@@ -1,40 +1,48 @@
-const { readdirSync } = require('fs')
-const { join } = require('path')
+const { readdirSync } = require("fs");
+const { join } = require("path");
 
-const events = []
+const events = [];
 const commands = {
   globalCommand: [],
-  localCommand: []
-}
+  localCommand: [],
+  allCommand: [],
+};
 
-const sourcePath = join(__dirname, '../src')
-const eventPath = join(__dirname, '../events')
-const commandFiles = readdirSync(sourcePath).filter(file => file.endsWith('.js'))
-const eventFiles = readdirSync(eventPath).filter(file => file.endsWith('.js'))
+const sourcePath = join(__dirname, "../src");
+const eventPath = join(__dirname, "../events");
+const commandFiles = readdirSync(sourcePath).filter((file) =>
+  file.endsWith(".js")
+);
+readdirSync(eventPath)
+  .filter((file) => file.endsWith(".js"))
+  .map((fil) => events.push(fil));
 
-for(const file of commandFiles) {
-  const com = require(`../src/${file}`)
+for (const file of commandFiles) {
+  const com = require(`../src/${file}`);
+  if (!com.execute) {
+    console.log(`[-] ${file}`);
+    continue;
+  }
+
+  commands.allCommand.push(com);
   if (com.test) {
-    commands.localCommand.push(com.data.toJSON())
+    commands.localCommand.push(com.data.toJSON());
   } else {
-    commands.globalCommand.push(com.data.toJSON())
+    commands.globalCommand.push(com.data.toJSON());
   }
 }
 
-for(const file of eventFiles) {
-  const eve = require(`../events/${file}`)
-  events.push(eve)
-}
+const commandsTable = [
+  {
+    Globals: commands.globalCommand.map((com) => com.name),
+    Locals: commands.localCommand.map((com) => com.name),
+    Event: events,
+  },
+];
 
-const commandsTable = [{
-  Globals: commands.globalCommand.map(com => com.name),
-  Locals: commands.localCommand.map(com => com.name),
-  Events: events.map(eve => eve.name)
-}]
-
-console.table(commandsTable)
+console.table(commandsTable);
 
 module.exports = {
   command: commands,
-  event: events
-}
+  Event: events,
+};

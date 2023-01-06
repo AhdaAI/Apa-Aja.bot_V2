@@ -4,7 +4,8 @@
   "description": "Next version of apa-aja.bot",
   "main": "index.js",
   "scripts": {
-    "test": "npm outdated && nodemon index.js"
+    "check": "npm outdated",
+    "start": "nodemon index.js"
   },
   "author": "Ahda",
   "license": "ISC",
