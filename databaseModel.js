@@ -14,6 +14,7 @@ const db = new Schema({
     roleChannel: String,
     shortDesc: String,
   },
+  embed: [{ name: String, value: String, inline: Boolean }],
 });
 
 module.exports = model("role", db);

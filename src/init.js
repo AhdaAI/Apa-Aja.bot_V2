@@ -11,10 +11,12 @@ const { builder } = require("../utils/builder");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("init")
-    .setDescription("Initializing settings")
+    .setDescription(
+      "Initializing settings, deploying role dropdown, and start logging error to channel"
+    )
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
 
-  test: true,
+  test: false,
 
   /**
    *
@@ -64,17 +66,25 @@ module.exports = {
         value: r.id,
       };
     });
-    const dropD = new builder("panel").selectMenu(options, "Choose one role");
+    const dropD = new builder("role").selectMenu(options, "Choose one role");
 
     const embedData = {
       title: await interaction.guild.name,
-      description: setup.shortDesc ? setup.shortDesc : null,
+      description: setup.shortDesc ? setup.shortDesc : "Awesome server!",
+      url: "https://bit.ly/IqT6zt",
+      thumbnail: { url: await interaction.guild.iconURL() },
+      footer: { text: "Created whenever bored" },
+      fields: server.embed ?? null,
     };
     const fancy = new EmbedBuilder(embedData);
 
     await channelRole.send({
       embeds: [fancy],
       components: [dropD],
+    });
+
+    await interaction.reply({
+      content: `New panel deployed on ${channelRole}`,
     });
   },
 };

@@ -1,7 +1,8 @@
-const { Interaction, codeBlock } = require("discord.js");
+const { Interaction, codeBlock, TextInputStyle } = require("discord.js");
 const channels = require("../utils/channel.json");
 const { client } = require("../index");
 const model = require("../databaseModel");
+const { builder } = require("../utils/builder");
 
 module.exports = {
   name: "interactionCreate",
@@ -51,6 +52,43 @@ module.exports = {
           ),
         });
         console.log(e);
+      }
+    }
+
+    if (interact.isAnySelectMenu()) {
+      const { customId, member, values, guildId } = interact;
+
+      if (customId == "role") {
+        const role = await interact.guild.roles.fetch(values[0]);
+        (await member.roles.cache.some((r) => r.name == role.name))
+          ? await member.roles.remove(role)
+          : await member.roles.add(role);
+        await interact.update({ content: " " });
+        await interact.followUp({
+          content: codeBlock(
+            `Add ${role.name}: ${member.roles.cache.some(
+              (r) => r.name === role.name
+            )}`
+          ),
+          ephemeral: true,
+        });
+      }
+
+      if (customId == "fieldEdit") {
+        const server = await model.findOne({ server: guildId }).exec();
+        const edit = server.embed.filter((f) => f.name == values[0]);
+
+        const option = {
+          id: edit.name,
+          label: edit.name,
+          style: TextInputStyle.Paragraph,
+        };
+        const mod = new builder("fieldEdit").modal("Editor", option);
+
+        await interact.reply({
+          content: " ",
+          components: [mod],
+        });
       }
     }
   },
