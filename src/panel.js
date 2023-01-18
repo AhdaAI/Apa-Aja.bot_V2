@@ -51,7 +51,7 @@ module.exports = {
     const fancy = new EmbedBuilder()
       .setTitle(serverData.name)
       .setThumbnail(serverData.iconURL())
-      .setDescription(server.setup.shortDesc ?? "Welcome to out lovely server.")
+      .setDescription(server.setup.shortDesc ?? "Welcome to our lovely server.")
       .setFooter({
         text: "type /help for more help",
         iconURL: serverData.iconURL(),
