@@ -4,8 +4,3 @@ node_modules
 src/ping.js
 test.js
 deploy.config.js
-
-src/ping.js
-src/ping.js
-test.js
-deploy.config.js
