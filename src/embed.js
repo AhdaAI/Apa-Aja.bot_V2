@@ -33,6 +33,14 @@ module.exports = {
             .setDescription("The position of field. Default: true")
             .setRequired(false)
         )
+        .addStringOption((option) =>
+          option
+            .setName("id")
+            .setDescription(
+              "Set custom id if you has 2 or more field with the same name"
+            )
+            .setRequired(false)
+        )
     )
     .addSubcommand((subCom) =>
       subCom.setName("edit").setDescription("Edit current embeds field.")
@@ -51,6 +59,7 @@ module.exports = {
         name: await interaction.options.getString("name"),
         value: await interaction.options.getString("value"),
         inline: (await interaction.options.getBoolean("inline")) ?? true,
+        id: await interaction.options.getString("name").toLowerCase(),
       };
 
       try {
@@ -67,6 +76,8 @@ module.exports = {
         });
       }
     }
+
+    // Edit Embeds
     if (interaction.options.getSubcommand() == "edit") {
       const data = server.embed;
       const option = data.map((r) => {

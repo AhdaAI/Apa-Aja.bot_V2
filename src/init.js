@@ -7,6 +7,7 @@ const {
 } = require("discord.js");
 const model = require("../databaseModel");
 const { builder } = require("../utils/builder");
+const defaultEmbed = require("../utils/custom.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -16,7 +17,7 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
 
-  test: false,
+  test: true,
 
   /**
    *
@@ -74,8 +75,20 @@ module.exports = {
       url: "https://bit.ly/IqT6zt",
       thumbnail: { url: await interaction.guild.iconURL() },
       footer: { text: "Created whenever bored" },
-      fields: server.embed ?? null,
+      fields: server.embed ?? [],
     };
+
+    const embedInit = defaultEmbed.default.embedField;
+
+    embedData.fields.push(
+      defaultEmbed.default.embedField.map((dat) => {
+        const val = codeBlock(`Owner: ${dat.value.owner}\n`);
+        return {
+          name: dat.name,
+          value: val,
+        };
+      })
+    );
     const fancy = new EmbedBuilder(embedData);
 
     await channelRole.send({

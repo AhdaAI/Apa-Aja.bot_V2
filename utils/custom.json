@@ -1,0 +1,16 @@
+{
+  "default": {
+    "embedField": [
+      {
+        "name": "__*Information*__",
+        "value": {
+          "owner": null,
+          "memberCount": 0,
+          "botCount": 0,
+          "totalMember": 0
+        },
+        "inline": true
+      }
+    ]
+  }
+}

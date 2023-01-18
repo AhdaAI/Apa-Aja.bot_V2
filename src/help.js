@@ -5,7 +5,16 @@ const { join } = require("path");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("help")
-    .setDescription("Sending help from the nearest hospital."),
+    .setDescription("Sending help from the nearest hospital.")
+    .addSubcommand((subCom) =>
+      subCom.setName("embed").setDescription("Get embed help")
+    )
+    .addSubcommand((subCom) =>
+      subCom.setName("setup").setDescription("Get setup help")
+    )
+    .addSubcommand((subCom) =>
+      subCom.setName("role").setDescription("Get roles commands")
+    ),
   test: true,
 
   /**

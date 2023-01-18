@@ -32,25 +32,36 @@ module.exports = {
           ? await model.findOne({ server: serverId }).exec()
           : false;
 
-        const { setup } = await server;
-        const log = await interact.guild.channels.fetch(setup.logsID);
-        try {
-          await interact.reply({
-            content: "Error: Command failed to interact",
-            ephemeral: true,
-          });
-        } catch (e) {
-          await log.send({
-            content: codeBlock(
-              `Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`
-            ),
-          });
+        if (server) {
+          const { setup } = await server;
+          const log = await interact.guild.channels.fetch(setup.logsID);
+          try {
+            await interact.reply({
+              content: "Error: Command failed to interact",
+              ephemeral: true,
+            });
+          } catch (e) {
+            if (log) {
+              await log.send({
+                content: codeBlock(
+                  `Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`
+                ),
+              });
+            }
+          }
+          log.size == 1
+            ? await log.send({
+                content: codeBlock(
+                  `Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`
+                ),
+              })
+            : await interact.followUp({
+                content: codeBlock(
+                  `Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`
+                ),
+                ephemeral: true,
+              });
         }
-        await log.send({
-          content: codeBlock(
-            `Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`
-          ),
-        });
         console.log(e);
       }
     }
@@ -76,11 +87,10 @@ module.exports = {
 
       if (customId == "fieldEdit") {
         const server = await model.findOne({ server: guildId }).exec();
-        const edit = server.embed.filter((f) => f.name == values[0]);
+        const edit = await server.embed.filter((f) => f.name == values[0]);
 
         const option = {
-          id: edit.name,
-          label: edit.name,
+          base: edit,
           style: TextInputStyle.Paragraph,
         };
         const mod = new builder("fieldEdit").modal("Editor", option);

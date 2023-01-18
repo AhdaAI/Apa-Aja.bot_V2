@@ -12,6 +12,15 @@ class builder {
   }
 
   selectMenu(option = Map, placeHolder = String) {
+    /**
+     * option = [
+     *  {
+     *    label: String,
+     *    description: String,
+     *    value: String
+     *  }
+     * ]
+     */
     return new ActionRowBuilder().addComponents(
       new StringSelectMenuBuilder()
         .setCustomId(this.id)
@@ -20,20 +29,20 @@ class builder {
     );
   }
 
-  modal(title, data = [{ id: String, label: String, style: TextInputStyle }]) {
-    const action = data.map((act) => {
-      return new TextInputBuilder()
-        .setCustomId(act.id)
-        .setLabel(act.label)
-        .setStyle(act.style);
-    });
+  modal(title, data = { base, style: TextInputStyle }) {
+    console.log(data);
+    const action = [];
+    action.push(
+      new TextInputBuilder()
+        .setCustomId(data.base.id)
+        .setLabel(data.base.name)
+        .setStyle(data.style)
+    );
     return new ModalBuilder()
       .setCustomId(this.id)
       .setTitle(title)
-      .addComponents(action);
+      .components(action);
   }
 }
 
-module.exports = {
-  builder,
-};
+module.exports = builder;
