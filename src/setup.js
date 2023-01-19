@@ -24,6 +24,12 @@ module.exports = {
         .setDescription("Channel to display dropdown menu to select roles")
         .setRequired(false)
         .addChannelTypes(ChannelType.GuildText)
+    )
+    .addStringOption((option) =>
+      option
+        .setName("short_desc")
+        .setDescription("Add short description to your server.")
+        .setRequired(false)
     ),
   test: true,
   /**
@@ -36,6 +42,9 @@ module.exports = {
       : false;
     const role = (await interaction.options.data)
       ? await interaction.options.getChannel("role_channel")
+      : false;
+    const shortDesc = (await interaction.options.data)
+      ? await interaction.options.getString("short_desc")
       : false;
     const serverId = await interaction.guildId;
     const res = [];
@@ -62,6 +71,12 @@ module.exports = {
       res.push("[?] Role channel not found.");
     } else {
       setup.roleChannel = role.id;
+    }
+
+    if (!shortDesc) {
+      res.push("[?] Short Description not found.");
+    } else {
+      setup.shortDesc = shortDesc;
     }
 
     await server.save();
