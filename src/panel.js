@@ -23,13 +23,6 @@ module.exports = {
     const allMember = await interaction.guild.members.cache;
     const humanMember = allMember.filter((member) => !member.user.bot);
     const botMember = allMember.filter((member) => member.user.bot);
-    const defaultEmbed = {
-      name: "__*INFORMATION*__",
-      value: codeBlock(
-        `Owner  : ${owner.user.username}\nMember : ${humanMember.size}\nBot\t: ${botMember.size}\nTotal Member: ${allMember.size}`
-      ),
-      inline: false,
-    };
     const serverData = await interaction.guild;
     const serverId = await interaction.guildId;
     const server = (await model.findOne({ server: serverId }).exec()) ?? false;
@@ -67,7 +60,13 @@ module.exports = {
       }) ?? null
     );
 
-    fancy.addFields(defaultEmbed);
+    fancy.addFields({
+      name: "__*INFORMATION*__",
+      value: codeBlock(
+        `Owner  : ${owner.user.username}\nMember : ${humanMember.size}\nBot\t: ${botMember.size}\nTotal Member: ${allMember.size}`
+      ),
+      inline: false,
+    });
 
     if (drop) {
       await interaction.reply({
