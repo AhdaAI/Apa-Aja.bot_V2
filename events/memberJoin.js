@@ -50,9 +50,13 @@ module.exports = {
       inline: true,
     });
 
-    const channel = await guild.channels.fetch(server.setup.welcomeChannel);
-    await channel.send({
-      embeds: [fancy],
-    });
+    const channel = server.setup.welcomeChannel
+      ? await guild.channels.fetch(server.setup.welcomeChannel)
+      : false;
+    if (channel) {
+      await channel.send({
+        embeds: [fancy],
+      });
+    }
   },
 };
