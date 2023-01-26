@@ -13,6 +13,7 @@ const db = new Schema({
     logsID: String,
     roleChannel: String,
     shortDesc: String,
+    welcomeChannel: String,
   },
   embed: [
     {

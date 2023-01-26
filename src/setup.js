@@ -25,6 +25,12 @@ module.exports = {
         .setRequired(false)
         .addChannelTypes(ChannelType.GuildText)
     )
+    .addChannelOption((option) =>
+      option
+        .setName("welcome_channel")
+        .setDescription("For member join events")
+        .setRequired(false)
+    )
     .addStringOption((option) =>
       option
         .setName("short_desc")
@@ -37,18 +43,8 @@ module.exports = {
    * @param {import("discord.js").Interaction} interaction
    */
   async execute(interaction) {
-    const logs = (await interaction.options.data)
-      ? await interaction.options.getChannel("logs")
-      : false;
-    const role = (await interaction.options.data)
-      ? await interaction.options.getChannel("role_channel")
-      : false;
-    const shortDesc = (await interaction.options.data)
-      ? await interaction.options.getString("short_desc")
-      : false;
     const serverId = await interaction.guildId;
     const res = [];
-
     const server = (await model.findOne({ server: serverId }).exec())
       ? await model.findOne({ server: serverId }).exec()
       : false;
@@ -61,23 +57,23 @@ module.exports = {
     }
 
     const { setup } = await server;
-    if (!logs) {
-      res.push("[?] Logs channel not found.");
-    } else {
-      setup.logsID = logs.id;
-    }
 
-    if (!role) {
-      res.push("[?] Role channel not found.");
-    } else {
-      setup.roleChannel = role.id;
-    }
-
-    if (!shortDesc) {
-      res.push("[?] Short Description not found.");
-    } else {
-      setup.shortDesc = shortDesc;
-    }
+    const logs = (await interaction.options.getChannel("logs"))
+      ? (setup.logsID = await interaction.options.getChannel("logs").id)
+      : false;
+    const role = (await interaction.options.getChannel("role_channel"))
+      ? (setup.roleChannel = await interaction.options.getChannel(
+          "role_channel"
+        ).id)
+      : false;
+    const shortDesc = (await interaction.options.getString("short_desc"))
+      ? (setup.shortDesc = await interaction.options.getString("short_desc"))
+      : false;
+    const welcome = (await interaction.options.getChannel("welcome_channel"))
+      ? (setup.welcomeChannel = await interaction.options.getChannel(
+          "welcome_channel"
+        ).id)
+      : false;
 
     await server.save();
 

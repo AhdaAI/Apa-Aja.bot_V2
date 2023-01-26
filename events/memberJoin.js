@@ -12,11 +12,12 @@ module.exports = {
   async execute(member) {
     const user = await member.user;
     const guild = await member.guild;
-    const allMember = guild.members.fetch();
+    const allMember = guild.members.cache;
     const server = (await model.findOne({ server: guild.id }).exec()) ?? false;
 
     if (!server) {
-      console.log(`Failed to find server ${guild.id}`);
+      console.log(`[!] Failed to find server ${guild.id}`);
+      return;
     }
 
     const fancy = new EmbedBuilder()
@@ -28,8 +29,17 @@ module.exports = {
       })
       .setThumbnail(guild.iconURL());
 
+    const userTime = user.createdAt;
     fancy.addFields({
-      name: "Member Count",
+      name: "__USER__",
+      value: codeBlock(
+        `Name   : ${user.username}\nDiscord: ${userTime.getFullYear()}`
+      ),
+      inline: true,
+    });
+
+    fancy.addFields({
+      name: "MEMBER COUNT",
       value: codeBlock(
         `Member : ${
           (await allMember).filter((user) => !user.user.bot).size
@@ -40,15 +50,7 @@ module.exports = {
       inline: true,
     });
 
-    fancy.addFields({
-      name: "Information",
-      value: codeBlock(`Owner: ${guild.fetchOwner()}
-      \nAvailable role: `),
-      inline: true,
-    });
-
-    const channel = await member.guild.channels.cache;
-    console.log(channel);
+    const channel = await guild.channels.fetch(server.setup.welcomeChannel);
     await channel.send({
       embeds: [fancy],
     });
