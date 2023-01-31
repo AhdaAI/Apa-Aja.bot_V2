@@ -50,7 +50,7 @@ module.exports = {
           (await allMember).filter((user) => !user.user.bot).size
         }\nBot\t: ${
           (await allMember).filter((user) => user.user.bot).size
-        }\nTotal Member: ${allMember.size}`
+        }\nTotal  : ${allMember.size}`
       ),
       inline: true,
     });
@@ -60,7 +60,7 @@ module.exports = {
       fancy.addFields({
         name: "AVAILABEL ROLES",
         value: codeBlock(listed),
-        inline: true,
+        inline: false,
       });
     }
 
