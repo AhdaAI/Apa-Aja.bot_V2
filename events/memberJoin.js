@@ -1,4 +1,9 @@
-const { GuildMember, EmbedBuilder, codeBlock } = require("discord.js");
+const {
+  GuildMember,
+  EmbedBuilder,
+  codeBlock,
+  underscore,
+} = require("discord.js");
 const model = require("../databaseModel");
 
 module.exports = {
@@ -31,7 +36,7 @@ module.exports = {
 
     const userTime = user.createdAt;
     fancy.addFields({
-      name: "__USER__",
+      name: "USER",
       value: codeBlock(
         `Name   : ${user.username}\nDiscord: ${userTime.getFullYear()}`
       ),
@@ -49,6 +54,15 @@ module.exports = {
       ),
       inline: true,
     });
+
+    if (server.roles.length >= 1) {
+      const listed = server.roles.map((r) => r.name).join("\n");
+      fancy.addFields({
+        name: "AVAILABEL ROLES",
+        value: codeBlock(listed),
+        inline: true,
+      });
+    }
 
     const channel = server.setup.welcomeChannel
       ? await guild.channels.fetch(server.setup.welcomeChannel)
