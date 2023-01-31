@@ -20,7 +20,6 @@ const db = new Schema({
       name: String,
       value: String,
       inline: Boolean,
-      id: String,
     },
   ],
 });
