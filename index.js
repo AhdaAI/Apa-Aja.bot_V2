@@ -1,7 +1,7 @@
 const { Client, ActivityType, Collection } = require("discord.js");
 const { env } = require("process");
-const { command, Event } = require("./utils/commandImport");
-const { start } = require("./utils/deployScript");
+const { command, Event, start } = require("./utils/commandImport");
+// const { start } = require("./utils/deployScript");
 require("dotenv").config();
 
 const { TOKEN } = env;

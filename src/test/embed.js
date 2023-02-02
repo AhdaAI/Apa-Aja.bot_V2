@@ -3,8 +3,8 @@ const {
   PermissionsBitField,
   codeBlock,
 } = require("discord.js");
-const model = require("../databaseModel");
-const { builder } = require("../utils/builder");
+const model = require("../../databaseModel");
+const { builder } = require("../../utils/builder");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -45,8 +45,6 @@ module.exports = {
     .addSubcommand((subCom) =>
       subCom.setName("edit").setDescription("Edit current embeds field.")
     ),
-
-  test: true,
   /**
    *
    * @param {import("discord.js").Interaction} interaction

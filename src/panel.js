@@ -13,7 +13,6 @@ module.exports = {
     .setDescription("Display the panel")
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
 
-  test: false,
   /**
    *
    * @param {import("discord.js").Interaction} interaction

@@ -15,7 +15,6 @@ module.exports = {
     .addSubcommand((subCom) =>
       subCom.setName("role").setDescription("Get roles commands")
     ),
-  test: true,
 
   /**
    *
