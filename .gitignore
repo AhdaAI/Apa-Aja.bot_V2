@@ -1,6 +1,6 @@
 .env
 node_modules
 
-src/ping.js
+src/test/ping.js
 test.js
 deploy.config.js

@@ -37,7 +37,6 @@ module.exports = {
         .setDescription("Add short description to your server.")
         .setRequired(false)
     ),
-  test: true,
   /**
    *
    * @param {import("discord.js").Interaction} interaction
