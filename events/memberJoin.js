@@ -3,6 +3,8 @@ const {
   EmbedBuilder,
   codeBlock,
   underscore,
+  time,
+  TimestampStyles,
 } = require("discord.js");
 const model = require("../databaseModel");
 
@@ -34,12 +36,10 @@ module.exports = {
       })
       .setThumbnail(guild.iconURL());
 
-    const userTime = user.createdAt;
+    const userTime = user.createdAt.toDateString();
     fancy.addFields({
       name: "USER",
-      value: codeBlock(
-        `Name   : ${user.username}\nDiscord: ${userTime.getFullYear()}`
-      ),
+      value: codeBlock(`Name   : ${user.username}\nDiscord: ${userTime}`),
       inline: true,
     });
 
