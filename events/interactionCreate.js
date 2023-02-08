@@ -1,5 +1,10 @@
-const { Interaction, codeBlock, TextInputStyle } = require("discord.js");
-const channels = require("../utils/channel.json");
+const {
+  Interaction,
+  codeBlock,
+  TextInputStyle,
+  EmbedBuilder,
+  underscore,
+} = require("discord.js");
 const { client } = require("../index");
 const model = require("../databaseModel");
 const { builder } = require("../utils/builder");
@@ -27,42 +32,44 @@ module.exports = {
       try {
         await command.execute(interact);
       } catch (e) {
+        console.log(e);
         const serverId = await interact.guildId;
-        const server = (await model.findOne({ server: serverId }).exec())
-          ? await model.findOne({ server: serverId }).exec()
-          : false;
+        const server =
+          (await model.findOne({ server: serverId }).exec()) ?? false;
+
+        await interact.reply({
+          content: codeBlock(
+            `Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`
+          ),
+          ephemeral: true,
+        });
 
         if (server) {
           const { setup } = await server;
-          const log = await interact.guild.channels.fetch(setup.logsID);
-          try {
-            await interact.reply({
-              content: "Error: Command failed to interact",
-              ephemeral: true,
-            });
-          } catch (e) {
-            if (log) {
-              await log.send({
-                content: codeBlock(
-                  `Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`
-                ),
-              });
-            }
-          }
-          log.size == 1
-            ? await log.send({
-                content: codeBlock(
-                  `Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`
-                ),
-              })
-            : await interact.followUp({
-                content: codeBlock(
-                  `Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`
-                ),
-                ephemeral: true,
-              });
+          const log = setup.logsID
+            ? await interact.guild.channels.fetch(setup.logsID)
+            : false;
+          if (!log) return;
+
+          const fancy = new EmbedBuilder()
+            .setTitle("Error log")
+            .setDescription(e.status ?? "-")
+            .setColor("DarkRed")
+            .setFooter({ text: `code: ${e.code}` });
+          fancy.addFields({
+            name: underscore("Message"),
+            value: codeBlock(e),
+            inline: false,
+          });
+          await log.send({
+            embeds: [fancy],
+          });
+        } else {
+          return await interact.followUp({
+            content: codeBlock("Error: No database."),
+            ephemeral: true,
+          });
         }
-        console.log(e);
       }
     }
 

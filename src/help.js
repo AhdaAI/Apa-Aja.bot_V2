@@ -43,7 +43,14 @@ module.exports = {
     const { options } = await interaction;
     const guild = await interaction.guild;
 
-    const string = options.getString("commands");
+    const string = options.getString("commands") ?? false;
+    if (!string) {
+      await interaction.reply({
+        content: codeBlock("Error: Cannot find module."),
+        ephemeral: true,
+      });
+      return;
+    }
     const com = require(`./${string}.js`);
     const help = com.help;
     const fancy = new EmbedBuilder()
