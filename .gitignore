@@ -4,3 +4,4 @@ node_modules
 src/test/ping.js
 test.js
 deploy.config.js
+unfinished_events
