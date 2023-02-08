@@ -7,10 +7,18 @@ const {
 const model = require("../databaseModel");
 
 module.exports = {
+  help: {
+    function: "Adding a role or more to database.",
+    command: `/add [role] [description]
+      role         : The desire role to add.
+      description  : The description of the role.
+      default desc : "[+] Text & Voice Channel."`,
+    required: "database",
+  },
   data: new SlashCommandBuilder()
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
     .setName("add")
-    .setDescription("Adding new role")
+    .setDescription("Adding new role.")
     .addRoleOption((option) =>
       option
         .setName("role")

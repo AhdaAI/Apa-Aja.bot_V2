@@ -7,9 +7,15 @@ const {
 const model = require("../databaseModel");
 
 module.exports = {
+  help: {
+    function:
+      "Setting up all the channel for dropdown, logs, and welcome feature.",
+    command: "/setup [options]",
+    required: "database",
+  },
   data: new SlashCommandBuilder()
     .setName("setup")
-    .setDescription("Setting up discord server")
+    .setDescription("Setting up discord server.")
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
     .addChannelOption((option) =>
       option
