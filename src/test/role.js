@@ -11,6 +11,7 @@ module.exports = {
    * @param {import("discord.js").Interaction} Inter
    */
   async execute(Inter) {
+    throw new Error("testing purpose");
     await Inter.reply({
       ephemeral: true,
       content: "Work on proggress",

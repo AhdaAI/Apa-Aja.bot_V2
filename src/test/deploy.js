@@ -11,6 +11,12 @@ const model = require("../../databaseModel");
 const panel = require("../panel");
 
 module.exports = {
+  help: {
+    function:
+      "Deploy panel command at designated place and test the welcome feature.",
+    command: "/deploy [options]",
+    required: "database\nlogs channel\nwelcome channel\nrole channel",
+  },
   data: new SlashCommandBuilder()
     .setName("deploy")
     .setDescription("Easy way to deploy your setup.")
