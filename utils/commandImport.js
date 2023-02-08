@@ -1,6 +1,7 @@
 const { REST, Routes } = require("discord.js");
 const { readdirSync } = require("fs");
 const { join } = require("path");
+require("dotenv").config();
 const { env } = require("process");
 
 const events = [];
@@ -56,16 +57,6 @@ async function start() {
   const { TOKEN, ClientID, GuildID } = env;
   const rest = new REST({ version: "10" }).setToken(TOKEN);
 
-  //Global commands deploy
-  const globalCom = await rest
-    .put(Routes.applicationCommands(ClientID), { body: commands.globalCommand })
-    .then(() =>
-      console.log(
-        `[!] Refreshed ${commands.globalCommand.length} globals application (/) commands.`
-      )
-    )
-    .catch((e) => console.log(e));
-
   //Local commands deploy
   const localCom = await rest
     .put(Routes.applicationCommands(ClientID, GuildID), {
@@ -73,7 +64,17 @@ async function start() {
     })
     .then(() =>
       console.log(
-        `[!] Refreshed ${commands.globalCommand.length} locals application (/) commands.`
+        `[!] Refreshed ${commands.localCommand.length} locals application (/) commands.`
+      )
+    )
+    .catch((e) => console.log(e));
+
+  //Global commands deploy
+  const globalCom = await rest
+    .put(Routes.applicationCommands(ClientID), { body: commands.globalCommand })
+    .then(() =>
+      console.log(
+        `[!] Refreshed ${commands.globalCommand.length} globals application (/) commands.`
       )
     )
     .catch((e) => console.log(e));
