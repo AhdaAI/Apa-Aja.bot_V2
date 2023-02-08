@@ -59,7 +59,7 @@ async function start() {
 
   //Local commands deploy
   const localCom = await rest
-    .put(Routes.applicationCommands(ClientID, GuildID), {
+    .put(Routes.applicationGuildCommands(ClientID, GuildID), {
       body: commands.localCommand,
     })
     .then(() =>
