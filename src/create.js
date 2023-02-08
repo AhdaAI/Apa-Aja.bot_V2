@@ -6,9 +6,14 @@ const {
 const model = require("../databaseModel");
 
 module.exports = {
+  help: {
+    function: "Creating new database entry.",
+    command: "/create",
+    required: "none",
+  },
   data: new SlashCommandBuilder()
     .setName("create")
-    .setDescription("Creating new database entry")
+    .setDescription("Creating new database entry.")
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
     .setDMPermission(false),
 

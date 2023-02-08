@@ -8,6 +8,7 @@ const {
   underscore,
 } = require("discord.js");
 const model = require("../../databaseModel");
+const panel = require("../panel");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -33,8 +34,8 @@ module.exports = {
    */
   async execute(interaction) {
     const data = {
-      panel: (await interaction.options.getBoolean("panel")) ?? false,
-      welcome: (await interaction.options.getBoolean("welcome")) ?? false,
+      panel: (await interaction.options.getBoolean("panel")) ?? true,
+      welcome: (await interaction.options.getBoolean("welcome")) ?? true,
     };
 
     const guild = await interaction.guild;
@@ -48,6 +49,13 @@ module.exports = {
     }
 
     const { setup } = server;
+    if (!setup.logsID && !setup.roleChannel && !setup.welcomeChannel) {
+      await interaction.reply({
+        content: "Please create a setup.",
+      });
+      return;
+    }
+
     const fancy = new EmbedBuilder()
       .setTitle(guild.name)
       .setDescription(setup.shortDesc ?? "Lovely... yes its a lovely server.")
@@ -64,11 +72,11 @@ module.exports = {
 
     const panelChannel = setup.roleChannel
       ? await guild.channels.fetch(setup.roleChannel)
-      : false;
+      : (data.panel = false);
 
     const welcomeChannel = setup.welcomeChannel
       ? await guild.channels.fetch(setup.welcomeChannel)
-      : false;
+      : (data.welcome = false);
 
     const test = new EmbedBuilder()
       .setTitle("Current status.")
@@ -105,7 +113,7 @@ module.exports = {
       }
     }
 
-    if (welcomeChannel) {
+    if (data.welcome) {
       await welcomeChannel.send({
         embeds: [test],
       });
@@ -119,26 +127,9 @@ module.exports = {
       });
     }
 
-    if (panelChannel) {
+    if (data.panel) {
       if (server.roles.length >= 1) {
-        const drop = new ActionRowBuilder().addComponents(
-          new StringSelectMenuBuilder()
-            .setCustomId("role")
-            .setPlaceholder("Select role...")
-            .addOptions(
-              server.roles.map((r) => {
-                return {
-                  label: r.name,
-                  description: r.description,
-                  value: r.id,
-                };
-              })
-            )
-        );
-        await panelChannel.send({
-          embeds: [fancy],
-          components: [drop],
-        });
+        panel.execute(interaction);
       } else {
         await panelChannel.send({
           embeds: [fancy],

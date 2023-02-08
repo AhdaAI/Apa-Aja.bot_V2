@@ -8,9 +8,14 @@ const model = require("../databaseModel");
 const builder = require("../utils/builder");
 
 module.exports = {
+  help: {
+    function: "Display a panel containing information about server.",
+    command: "/panel",
+    required: "database",
+  },
   data: new SlashCommandBuilder()
     .setName("panel")
-    .setDescription("Display the panel")
+    .setDescription("Display the panel.")
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
 
   /**
