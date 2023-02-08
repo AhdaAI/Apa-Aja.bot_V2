@@ -1,6 +1,7 @@
 const { REST, Routes } = require("discord.js");
 const { readdirSync } = require("fs");
 const { join } = require("path");
+require("dotenv").config();
 const { env } = require("process");
 
 const events = [];
@@ -73,7 +74,7 @@ async function start() {
     })
     .then(() =>
       console.log(
-        `[!] Refreshed ${commands.globalCommand.length} locals application (/) commands.`
+        `[!] Refreshed ${commands.localCommand.length} locals application (/) commands.`
       )
     )
     .catch((e) => console.log(e));
