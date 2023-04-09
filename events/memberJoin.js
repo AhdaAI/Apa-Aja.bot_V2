@@ -1,11 +1,4 @@
-const {
-  GuildMember,
-  EmbedBuilder,
-  codeBlock,
-  underscore,
-  time,
-  TimestampStyles,
-} = require("discord.js");
+const { GuildMember, EmbedBuilder, codeBlock } = require("discord.js");
 const model = require("../databaseModel");
 
 module.exports = {
@@ -34,7 +27,7 @@ module.exports = {
         iconURL: guild.iconURL(),
         text: "Type /help for more help.",
       })
-      .setThumbnail(guild.iconURL());
+      .setThumbnail(user.avatarURL() ?? guild.iconURL());
 
     const userTime = user.createdAt.toDateString();
     fancy.addFields({

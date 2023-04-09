@@ -50,9 +50,7 @@ module.exports = {
   async execute(interaction) {
     const serverId = await interaction.guildId;
     const res = [];
-    const server = (await model.findOne({ server: serverId }).exec())
-      ? await model.findOne({ server: serverId }).exec()
-      : false;
+    const server = (await model.findOne({ server: serverId }).exec()) ?? false;
     if (!server) {
       await interaction.reply({
         content: `Please create new database (/create)`,
