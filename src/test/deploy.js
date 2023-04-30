@@ -9,6 +9,7 @@ const {
 } = require("discord.js");
 const model = require("../../databaseModel");
 const panel = require("../panel");
+const eventJoin = require("../../events/memberJoin");
 
 module.exports = {
   help: {
@@ -71,7 +72,6 @@ module.exports = {
         iconURL: guild.iconURL(),
       });
 
-    const res = [];
     const logsChannel = setup.logsID
       ? await guild.channels.fetch(setup.logsID)
       : false;
@@ -84,45 +84,59 @@ module.exports = {
       ? await guild.channels.fetch(setup.welcomeChannel)
       : (data.welcome = false);
 
-    const test = new EmbedBuilder()
-      .setTitle("Current status.")
-      .setDescription(setup.shortDesc ?? "Such a lovely day.")
-      .setFooter({ text: "/embed to add new embed" });
+    // const test = new EmbedBuilder()
+    //   .setTitle("Current status.")
+    //   .setDescription(setup.shortDesc ?? "Such a lovely day.")
+    //   .setFooter({ text: "/embed to add new embed" });
 
-    test.addFields({
-      name: underscore("Member"),
-      value: codeBlock(`Total member: ${guild.members.cache.size}`),
-      inline: true,
-    });
+    // test.addFields({
+    //   name: underscore("Member"),
+    //   value: codeBlock(`Total member: ${guild.members.cache.size}`),
+    //   inline: true,
+    // });
 
-    if (server.roles.length >= 1) {
-      test.addFields({
-        name: underscore(`${server.roles.length} Available role`),
-        value: codeBlock(server.roles.map((r) => r.name).join("\n")),
-        inline: true,
-      });
-    }
+    // if (server.roles.length >= 1) {
+    //   test.addFields({
+    //     name: underscore(`${server.roles.length} Available role`),
+    //     value: codeBlock(server.roles.map((r) => r.name).join("\n")),
+    //     inline: true,
+    //   });
+    // }
 
-    if (server.embed >= 1) {
-      for (let em of server.embed) {
-        fancy.addFields({
-          name: em.name,
-          value: codeBlock(em.value),
-          inline: em.inline,
-        });
+    // Testing custom embed
+    // if (server.embed >= 1) {
+    //   for (let em of server.embed) {
+    //     fancy.addFields({
+    //       name: em.name,
+    //       value: codeBlock(em.value),
+    //       inline: em.inline,
+    //     });
 
-        test.addFields({
-          name: em.name,
-          value: codeBlock(em.value),
-          inline: em.inline,
-        });
+    //     test.addFields({
+    //       name: em.name,
+    //       value: codeBlock(em.value),
+    //       inline: em.inline,
+    //     });
+    //   }
+    // }
+
+    const err = [];
+
+    if (data.welcome) {
+      const user = await interaction.member;
+      try {
+        eventJoin.execute(user);
+      } catch (e) {
+        err.push(`${e.code}\n${e.message}`);
       }
     }
 
-    if (data.welcome) {
-      await welcomeChannel.send({
-        embeds: [test],
-      });
+    if (data.panel) {
+      try {
+        await panel.execute(interaction);
+      } catch (e) {
+        err.push(`${e.code}\n${e.message}`);
+      }
     }
 
     if (logsChannel) {
@@ -133,14 +147,12 @@ module.exports = {
       });
     }
 
-    if (data.panel) {
-      if (server.roles.length >= 1) {
-        panel.execute(interaction);
-      } else {
-        await panelChannel.send({
-          embeds: [fancy],
-        });
-      }
+    if (err.length != 0) {
+      await interaction.reply({
+        content: "Error has occured",
+        ephemeral: true,
+      });
+      return;
     }
 
     await interaction.reply({

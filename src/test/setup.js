@@ -4,7 +4,7 @@ const {
   codeBlock,
   ChannelType,
 } = require("discord.js");
-const model = require("../databaseModel");
+const model = require("../../databaseModel");
 
 module.exports = {
   help: {

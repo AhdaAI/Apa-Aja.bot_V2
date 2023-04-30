@@ -56,7 +56,7 @@ module.exports = {
         await server.save();
         return await Interaction.editReply({
           ephemeral: true,
-          content: codeBlock(`Deleting ${role.name}....`),
+          content: codeBlock(`Role "${role.name}" deleted.`),
         });
       }
     }
