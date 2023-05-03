@@ -37,12 +37,14 @@ module.exports = {
         const server =
           (await model.findOne({ server: serverId }).exec()) ?? false;
 
-        await interact.reply({
-          content: codeBlock(
-            `Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`
-          ),
-          ephemeral: true,
-        });
+        if (!(await interact.replied)) {
+          await interact.reply({
+            content: codeBlock(
+              `Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`
+            ),
+            ephemeral: true,
+          });
+        }
 
         if (server) {
           const { setup } = await server;
