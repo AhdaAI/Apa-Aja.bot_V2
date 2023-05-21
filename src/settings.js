@@ -50,24 +50,28 @@ module.exports = {
     const channel = await interaction.options?.getChannel("channel");
     const data = (await model.findOne({ server: serverId }).exec()) ?? false;
 
+    if (!data) {
+      await interaction.reply({
+        content: codeBlock("[?] Database unknown."),
+        ephemeral: true,
+      });
+      throw new Error("[?] Database unknown.");
+    }
+
     if (options == "display") {
       if (!data) {
         return await interaction.reply({
           ephemeral: true,
-          content: "Database not found",
+          content: codeBlock("[?] Database not found, /config to configure"),
         });
       }
 
       const setup = data.setup;
-      const logs =
-        (await interaction.guild.channels.fetch(setup.logsID)) ??
-        "Log channel unknown.";
-      const roleCh =
-        (await interaction.guild.channels.fetch(setup.roleChannel)) ??
-        "Role channel unknown.";
-      const welCh =
-        (await interaction.guild.channels.fetch(setup.welcomeChannel)) ??
-        "Welcome channel unknown.";
+      const logs = await interaction.guild.channels.fetch(setup.logsID);
+      const roleCh = await interaction.guild.channels.fetch(setup.roleChannel);
+      const welCh = await interaction.guild.channels.fetch(
+        setup.welcomeChannel
+      );
 
       const fancy = new EmbedBuilder()
         .setTitle("Settings")
@@ -76,25 +80,25 @@ module.exports = {
 
       fancy.addFields({
         name: "Log Channel",
-        value: codeBlock(logs.name),
+        value: codeBlock(logs.name ?? "Unknown"),
         inline: true,
       });
 
       fancy.addFields({
         name: "Role Channel",
-        value: codeBlock(roleCh.name),
+        value: codeBlock(roleCh.name ?? "Unknown"),
         inline: true,
       });
 
       fancy.addFields({
         name: "Welcome Channel",
-        value: codeBlock(welCh.name),
+        value: codeBlock(welCh.name ?? "Unknown"),
         inline: true,
       });
 
       fancy.addFields({
         name: "Server Short Description",
-        value: codeBlock(setup.shortDesc ?? "-"),
+        value: codeBlock(setup.shortDesc ?? undefined),
         inline: false,
       });
 
