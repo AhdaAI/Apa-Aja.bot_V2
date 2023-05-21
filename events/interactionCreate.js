@@ -44,6 +44,13 @@ module.exports = {
             ),
             ephemeral: true,
           });
+        } else {
+          await interact.followUp({
+            content: codeBlock(
+              `Code: ${e.code}\nMessage: ${e.message}\nStatus: ${e.status}`
+            ),
+            ephemeral: true,
+          });
         }
 
         if (server) {
